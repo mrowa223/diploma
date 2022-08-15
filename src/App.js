@@ -3,54 +3,36 @@ import "./App.css";
 import "./scss/app.scss";
 
 import Header from "./components/Header";
-import Categories from "./components/Categories";
-import Sort from "./components/Sort";
-import PizzaBlock from "./components/PizzaBlock";
-
-import Skeleton from "./components/PizzaBlock/Skeleton";
+import Home from "./pages/Home";
+import Cart from "./pages/Cart";
+import NotFound from "./pages/NotFound";
+import { render } from "react-dom";
+// UseSelector to get information, UseDispatch to do something
+import { useSelector, useDispatch } from "react-redux/es/exports";
+import { Routes, Route } from "react-router-dom";
+import { decrement, increment } from "./redux/slices/filterSlice";
+// Exporting component.obj to createContext
+export const SearchContext = React.createContext();
 
 function App() {
-  let [items, setItems] = React.useState([]);
-  const [isLoading, setIsLoading] = React.useState(true);
-  // https://62d2bc7981cb1ecafa64e72d.mockapi.io/items
-  // React.useEffect(() => {
-  //   fetch("https://62d2bc7981cb1ecafa64e72d.mockapi.io/items")
-  //     .then((res) => res.json())
-  //     .then((arr) => {
-  //       setItems(arr);
-  //       setIsLoading(false);
-  //     });
-  // }, [items]);
-
-  fetch("https://62d2bc7981cb1ecafa64e72d.mockapi.io/items")
-    .then((res) => {
-      return res.json();
-    })
-    .then((arr) => {
-      console.log("Массив пицц", arr);
-      setItems(arr);
-    });
+  const [searchValue, setSearchValue] = React.useState("");
+  // const count = useSelector((state) => state.counter.count);
+  // const dispatch = useDispatch();
   return (
     <div className="wrapper">
-      <Header />
-
-      <div className="content">
-        <div className="container">
-          <div className="content__top">
-            <Categories />
-            <Sort />
-          </div>
-          <h2 className="content__title">Все пиццы</h2>
-          <div className="content__items">
-            {items.map((obj) => (
-              <PizzaBlock key={obj.id} {...obj} />
-            ))}
-            {/* {isLoading
-              ? [...new Array(6)].map((_, index) => <Skeleton key={index} />)
-              : items.map((obj) => <PizzaBlock key={obj.id} {...obj} />)} */}
-          </div>
+     
+      {/* provider is a obj / works like a routes (for destroying props drilling // to get all logic in the Search at the glance) */}
+      <SearchContext.Provider value={{ searchValue, setSearchValue }}>
+        <Header />
+        <div className="content">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          {/* <NotFound /> */}
         </div>
-      </div>
+      </SearchContext.Provider>
     </div>
   );
 }
