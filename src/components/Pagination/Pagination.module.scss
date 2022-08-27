@@ -1,0 +1,75 @@
+.root {
+  //   :global {
+  //     .previous {
+  //       background-color: red;
+  //     }
+  //   }
+
+  li {
+    display: inline-block;
+ul{
+  padding-left: 0rem !important;
+}
+    a {
+      display: inline-block;
+      text-align: center;
+      width: 45px;
+      line-height: 42px;
+      height: 45px;
+      border: 1px solid #fe5f1e !important;
+      border-radius: 30px;
+      margin-right: 10px;
+      cursor: pointer;
+      display: inline-block;
+      color: #fe5f1e !important;
+      &:hover {
+        background-color: #fe5f1e;
+        color: white !important;
+        a {
+          color: #fff !important;
+        }
+      }
+    }
+  }
+
+  :global {
+    .selected {
+      a {
+        background-color: #fe5f1e;
+        color: #fff !important;
+      }
+    }
+  }
+}
+
+@media (min-width: 320px) {
+  .root{
+    li{
+      width: 16px;
+      margin-right: 30px;
+    }
+  }
+  
+}
+
+
+@media (min-width: 375px) {
+  .root{
+    ul{
+      padding-left: 0 !important;
+    }
+    li{
+      width: 24px;
+      margin-right: 30px;
+    }
+  }
+}
+
+@media (min-width: 425px) {
+  .root{
+    li{
+      width: 34px;
+      margin-right: 12px;
+    }
+  }
+}

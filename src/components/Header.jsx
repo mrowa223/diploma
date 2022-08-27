@@ -1,18 +1,44 @@
+import React from "react";
 import logoSvg from "../assets/img/pizza-logo.svg";
+import { Link } from "react-router-dom";
+import Search from "./Search";
+
+//
+
+import { useSelector } from "react-redux";
 function Header() {
+  const { items, totalPrice } = useSelector((state) => state.cart);
+  const isMounted = React.useRef(false);
+
+  const totalCount = items.reduce((sum, item) => sum + item.count, 0);
+
+  React.useEffect(() => {
+    if (isMounted.current) {
+      const json = JSON.stringify(items);
+      const priceAll = JSON.stringify(totalPrice);
+      localStorage.setItem("cart", json);
+      localStorage.setItem("price", priceAll);
+    }
+    isMounted.current = true;
+  }, [items, totalCount]);
+
   return (
     <div className="header">
       <div className="container">
-        <div className="header__logo">
-          <img width="38" src={logoSvg} alt="Pizza logo" />
-          <div>
-            <h1>React Pizza</h1>
-            <p>самая вкусная пицца во вселенной</p>
+        <Link to="/">
+          <div className="header__logo">
+            <img width="38" src={logoSvg} alt="Pizza logo" />
+            <div>
+              <h1>React Pizza</h1>
+              <p>самая вкусная пицца во вселенной</p>
+            </div>
           </div>
-        </div>
+        </Link>
+        <Search />
         <div className="header__cart">
-          <a href="/cart.html" className="button button--cart">
-            <span>520 ₽</span>
+          
+          <Link to="/cart" className="button button--cart">
+            <span>{totalPrice} ₽</span>
             <div className="button__delimiter"></div>
             <svg
               width="18"
@@ -43,8 +69,9 @@ function Header() {
                 strokeLinejoin="round"
               />
             </svg>
-            <span>3</span>
-          </a>
+            
+            <span>{totalCount}</span>
+          </Link>
         </div>
       </div>
     </div>
